@@ -6,6 +6,8 @@ export interface School {
     mapUrl: string;
     description: string;
     level: string;
+    startYear: string; // Tambah: Tahun Masuk
+    endYear: string;   // Tambah: Tahun Lulus/Sekarang
 }
 
 export const schools: School[] = [
@@ -18,6 +20,8 @@ export const schools: School[] = [
         description:
             "TK Aurora Kids adalah tempat pertama saya belajar tentang dunia pendidikan. Di sini saya mulai mengenal huruf, angka, dan pentingnya rasa ingin tahu.",
         level: "Kindergarten",
+        startYear: "2013",
+        endYear: "2015",
     },
     {
         id: 2,
@@ -28,6 +32,8 @@ export const schools: School[] = [
         description:
             "Saya bersekolah di SD Anugrah School hanya selama satu semester di kelas 1. Masa itu singkat namun penuh kenangan sebelum saya pindah ke Malang karena ayah saya meninggal dunia.",
         level: "Elementary School",
+        startYear: "2015",
+        endYear: "2016 (Semester 1)",
     },
     {
         id: 3,
@@ -38,6 +44,8 @@ export const schools: School[] = [
         description:
             "Sekolah dasar utama saya di Malang. Di sini saya banyak belajar hal baru, mulai dari disiplin, tanggung jawab, hingga kerja sama dalam kelompok.",
         level: "Elementary School",
+        startYear: "2016",
+        endYear: "2021",
     },
     {
         id: 4,
@@ -48,6 +56,8 @@ export const schools: School[] = [
         description:
             "Masa SMP saya di Shalahuddin Malang penuh pengalaman penting, terutama dalam pengembangan karakter dan organisasi sekolah.",
         level: "Junior High School",
+        startYear: "2021",
+        endYear: "2024",
     },
     {
         id: 5,
@@ -58,5 +68,7 @@ export const schools: School[] = [
         description:
             "Sekarang saya bersekolah di SMK Telkom Malang, mengambil jurusan Rekayasa Perangkat Lunak (RPL). Di sini saya semakin fokus belajar dunia teknologi, pemrograman, dan pengembangan sistem.",
         level: "Senior High School",
+        startYear: "2024",
+        endYear: "Sekarang", // Tahun ini disesuaikan
     },
 ];
