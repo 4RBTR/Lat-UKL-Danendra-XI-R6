@@ -10,7 +10,8 @@ import {
     Search,
     X,
     Trash2
-} from "lucide-react";
+}
+from "lucide-react";
 
 // Tipe data untuk Skill
 type Skill = {
@@ -214,8 +215,8 @@ export default function SkillsPage() {
                             key={cat}
                             onClick={() => setFilter(cat)}
                             className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${filter === cat
-                                    ? "bg-teal-600 border-teal-600 text-white shadow-md"
-                                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-100"
+                                ? "bg-teal-600 border-teal-600 text-white shadow-md"
+                                : "bg-white border-slate-200 text-slate-600 hover:bg-slate-100"
                                 }`}
                         >
                             {cat}

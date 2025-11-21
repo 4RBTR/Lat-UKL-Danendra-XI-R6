@@ -6,8 +6,8 @@ export interface School {
     mapUrl: string;
     description: string;
     level: string;
-    startYear: string; // Tambah: Tahun Masuk
-    endYear: string;   // Tambah: Tahun Lulus/Sekarang
+    startYear: string;
+    endYear: string;
 }
 
 export const schools: School[] = [
@@ -69,6 +69,6 @@ export const schools: School[] = [
             "Sekarang saya bersekolah di SMK Telkom Malang, mengambil jurusan Rekayasa Perangkat Lunak (RPL). Di sini saya semakin fokus belajar dunia teknologi, pemrograman, dan pengembangan sistem.",
         level: "Senior High School",
         startYear: "2024",
-        endYear: "Sekarang", // Tahun ini disesuaikan
+        endYear: "Sekarang",
     },
 ];

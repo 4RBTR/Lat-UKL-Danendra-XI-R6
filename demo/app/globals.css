@@ -52,7 +52,7 @@
 .animate-btnPulse {
   animation: btnPulse 2s infinite ease-in-out;
 }
- 
+
 
 body {
   background: var(--background);
