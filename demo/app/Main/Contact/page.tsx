@@ -12,6 +12,7 @@ import {
     Instagram
 } from "lucide-react";
 
+
 export default function ContactPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [isSent, setIsSent] = useState(false);

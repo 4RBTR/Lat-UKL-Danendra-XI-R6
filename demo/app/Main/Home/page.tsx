@@ -18,7 +18,7 @@ const Home: React.FC = () => {
     const [typingSpeed, setTypingSpeed] = useState(150);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const roles = ["Student at SMK Telkom", "Junior Frontend Developer", "Tech Enthusiast"];
+    const roles = ["Student at SMK Telkom", "Frontend Developer", "Tech Enthusiast"];
 
     useEffect(() => {
         const handleTyping = () => {
