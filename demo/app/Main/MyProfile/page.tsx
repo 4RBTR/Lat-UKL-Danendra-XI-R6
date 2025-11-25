@@ -263,7 +263,7 @@ export default function ProfilePage() {
                         {/* SOCIAL MEDIA ICONS (Ditambahkan Kembali) */}
                         <div className="mt-6 flex justify-center md:justify-start gap-4">
                             <a href="https://github.com/4RBTR" className="p-2 bg-slate-100 rounded-full hover:bg-slate-800 hover:text-white transition-colors" title="github"><Github size={20} /></a>
-                            <a href="#" className="p-2 bg-slate-100 rounded-full hover:bg-blue-600 hover:text-white transition-colors" title="linkedin"><Linkedin size={20} /></a>
+                            <a href="https://linkedin.com/in/danendra" className="p-2 bg-slate-100 rounded-full hover:bg-blue-600 hover:text-white transition-colors" title="linkedin"><Linkedin size={20} /></a>
                             <a href="https://www.instagram.com/danendrabagasandra/" className="p-2 bg-slate-100 rounded-full hover:bg-pink-600 hover:text-white transition-colors" title="instagram"><Instagram size={20} /></a>
                         </div>
                     </div>
