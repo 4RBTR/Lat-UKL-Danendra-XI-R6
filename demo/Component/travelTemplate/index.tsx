@@ -4,7 +4,8 @@ import TravelSidebar from "./sidebar"; // Ganti ke TravelSidebar
 
 // Definisi Tipe Menu dan Props
 type MenuType = { id: string, icon: ReactNode, path: string, label: string }
-type TravelProp = { children: ReactNode, id: string, title: string, menuList: MenuType[] }
+type MenuGroupType = { category: string, items: MenuType[] }
+type TravelProp = { children: ReactNode, id: string, title: string, menuList: MenuGroupType[] }
 
 const TravelTemplate = ({ children, id, title, menuList }: TravelProp) => {
     return (

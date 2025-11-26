@@ -1,9 +1,9 @@
 import TravelTemplate from "@/Component/travelTemplate"
-import MenuList from "../menuList"
+import MenuList from "@/app/Main/menuList"
 
 export const metadata = {
-    title: 'Home',
-    description: 'Halaman Utama',
+    title: 'Arcade',
+    description: 'Arcade',
 }
 
 type PropsLayout = {
@@ -13,8 +13,8 @@ type PropsLayout = {
 const RootLayout = ({ children }: PropsLayout) => {
     return (
         <><TravelTemplate
-            title="Home"
-            id="Home" // ID harus sesuai dengan ID di menuList.tsx
+            title="Arcade"
+            id="Arcade" // ID harus sesuai dengan ID di menuList.tsx
             menuList={MenuList}
         >
             {children}
