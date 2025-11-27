@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
     Search, X, Folder, TrendingUp, Home,
     User, BookOpen, Settings, List, Activity,
-    Layers, Code, LayoutDashboard, Send,
+    Layers, Code, Send,
     Gamepad, Book, FileText, Gift, Heart,
     Server, Sparkles
 } from "lucide-react";
@@ -14,7 +14,7 @@ import {
 // Note: Path harus sesuai dengan nama folder di app/Main
 const allRoutes = [
     // Struktur Utama
-    { label: "Home", path: "/Main", icon: <Home size={18} />, tags: "utama beranda index" },
+    { label: "Dashboard", path: "/Main/Dashboard", icon: <Home size={18} />, tags: "utama beranda index" },
     { label: "My Profile", path: "/Main/MyProfile", icon: <User size={18} />, tags: "profil diri info bio" },
 
     // Pendidikan & Skill
@@ -28,7 +28,6 @@ const allRoutes = [
     { label: "Insights / Blog", path: "/Main/Insights", icon: <Book size={18} />, tags: "blog artikel tulisan" },
 
     // Utilitas & Pengaturan
-    { label: "Dashboard", path: "/Main/Dashboard", icon: <LayoutDashboard size={18} />, tags: "analitik data ringkasan" },
     { label: "Design System (Gear)", path: "/Main/Gear", icon: <Layers size={18} />, tags: "komponen desain ui/ux" },
     { label: "Changelog", path: "/Main/Changelog", icon: <Activity size={18} />, tags: "update riwayat perubahan" },
     { label: "Settings", path: "/Main/Settings", icon: <Settings size={18} />, tags: "pengaturan konfigurasi" },

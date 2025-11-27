@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -6,7 +7,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
     Gamepad2, RefreshCw, Brain, Calculator, Grid3X3, Play, Keyboard, Zap, Monitor, Lightbulb, Check,
-    ShoppingCart, User, Code, Grid, Smartphone, Palette, List, Type, TrendingUp, AlertTriangle, X
+    ShoppingCart, User, Code, Grid, Smartphone, Palette, List, Type, TrendingUp, AlertTriangle, X,
+    Bot, Image, Send, MessageSquare, CornerUpLeft // NEW IMPORTS FOR GEMINI
 } from "lucide-react";
 
 // ----------------------------------------------------------------------
@@ -14,8 +16,8 @@ import {
 // ----------------------------------------------------------------------
 
 export default function ArcadePage() {
-    // Default aktifkan game Designer AI
-    const [activeGame, setActiveGame] = useState<"tictactoe" | "math" | "memory" | "typer" | "reaction" | "designerai">("designerai");
+    // Default diubah ke Gemini AI Playground untuk demonstrasi
+    const [activeGame, setActiveGame] = useState<"tictactoe" | "math" | "memory" | "typer" | "reaction" | "designerai" | "gemini">("gemini");
 
     return (
         <div className="max-w-6xl mx-auto p-4 md:p-8 animate-fadeIn pb-20">
@@ -26,12 +28,15 @@ export default function ArcadePage() {
                     <Gamepad2 className="w-10 h-10" /> Arcade Zone
                 </h1>
                 <p className="text-slate-600 max-w-2xl mx-auto">
-                    Arena bermain untuk melatih logika, memori, kecepatan mengetik, dan refleks.
+                    Arena bermain untuk melatih logika, memori, kecepatan mengetik, refleks, dan menguji simulasi AI.
                 </p>
             </div>
 
             {/* GAME TABS (Scrollable di Mobile) */}
             <div className="flex justify-center gap-3 mb-10 overflow-x-auto pb-4 no-scrollbar">
+                <button onClick={() => setActiveGame("gemini")} className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold whitespace-nowrap transition-all ${activeGame === "gemini" ? "bg-sky-600 text-white shadow-lg" : "bg-white text-slate-600 hover:bg-slate-50"}`}>
+                    <Bot size={18} /> Gemini AI
+                </button>
                 <button onClick={() => setActiveGame("tictactoe")} className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold whitespace-nowrap transition-all ${activeGame === "tictactoe" ? "bg-indigo-600 text-white shadow-lg" : "bg-white text-slate-600 hover:bg-slate-50"}`}>
                     <Grid3X3 size={18} /> Tic-Tac-Toe
                 </button>
@@ -54,6 +59,7 @@ export default function ArcadePage() {
 
             {/* GAME CONTAINER */}
             <div className="bg-white rounded-3xl shadow-xl p-6 md:p-10 min-h-[500px] border border-slate-100 relative flex flex-col items-center justify-center">
+                {activeGame === "gemini" && <GeminiAIPage />}
                 {activeGame === "tictactoe" && <TicTacToe />}
                 {activeGame === "math" && <MathRush />}
                 {activeGame === "memory" && <MemoryGame />}
@@ -64,6 +70,213 @@ export default function ArcadePage() {
         </div>
     );
 }
+
+// ----------------------------------------------------------------------
+// 🧠 KOMPONEN BARU: GEMINI AI PLAYGROUND (SIMULASI INTERGRASI)
+// ----------------------------------------------------------------------
+
+type AiMode = "vision" | "generate" | "chat";
+
+function GeminiAIPage() {
+    const [mode, setMode] = useState<AiMode>("vision");
+    const [input, setInput] = useState("");
+    const [response, setResponse] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [chatHistory, setChatHistory] = useState<Array<{ user: string, ai: string }>>([]);
+
+    const handleGeminiCall = (e?: React.FormEvent) => {
+        if (e) e.preventDefault();
+        if (isLoading || input.trim() === "") return;
+
+        setIsLoading(true);
+        setResponse("");
+
+        // Clear history only if mode changes
+        if (mode !== "chat") {
+            setChatHistory([]);
+        }
+
+        setTimeout(() => {
+            let aiResponse = "";
+            let newChatHistory = chatHistory;
+
+            if (mode === "vision") {
+                aiResponse = handleVisionSimulation(input);
+            } else if (mode === "generate") {
+                aiResponse = handleGenerateSimulation(input);
+            } else if (mode === "chat") {
+                aiResponse = handleChatSimulation(input);
+
+                newChatHistory = [...chatHistory, { user: input, ai: aiResponse }];
+                setChatHistory(newChatHistory);
+            }
+
+            setResponse(aiResponse);
+            setInput("");
+            setIsLoading(false);
+        }, 2000);
+    };
+
+    const handleVisionSimulation = (text: string) => {
+        if (text.toLowerCase().includes("laptop") || text.toLowerCase().includes("komputer")) {
+            return "Analisis Visual (V): Gambar yang diunggah menunjukkan perangkat elektronik komputasi. Ini adalah Laptop Gaming berpendingin tinggi dengan keyboard mekanikal. Saran: Periksa suhu GPU saat menjalankan game berat.";
+        }
+        if (text.toLowerCase().includes("kucing") || text.toLowerCase().includes("hewan")) {
+            return "Analisis Visual (V): Gambar ini menunjukkan seekor Kucing Domestik dengan bulu berwarna campuran. Gemini mendeteksi ekspresi 'ingin bermain'. Saran: Berikan makanan dan pelukan ekstra hari ini.";
+        }
+        return "Analisis Visual (V): Gambar tidak terdeteksi dalam database simulasi. Asumsi: Ini adalah gambar non-standar dengan resolusi tinggi. Perlu konteks tambahan.";
+    };
+
+    const handleGenerateSimulation = (text: string) => {
+        const topic = text.length > 50 ? text.substring(0, 50) + "..." : text;
+        return `
+### 📝 Artikel Hasil Generasi Gemini
+**Judul:** Pentingnya ${topic} dalam Kehidupan Modern
+
+**Paragraf 1:** Di era digital yang serba cepat ini, peran dari '${topic.toUpperCase()}' telah menjadi fundamental. Para ahli meyakini bahwa adopsi teknologi ini akan membawa perubahan paradigma yang signifikan dalam industri dan kehidupan sehari-hari.
+
+**Paragraf 2:** Gemini merekomendasikan: Mulailah dengan langkah kecil, fokus pada implementasi yang berkelanjutan. Analisis mendalam menunjukkan peningkatan efisiensi sebesar 35% pada perusahaan yang mengintegrasikan konsep ini sepenuhnya.
+        `;
+    };
+
+    const handleChatSimulation = (text: string) => {
+        const lowerText = text.toLowerCase();
+        if (lowerText.includes("siapa kamu")) {
+            return "Saya adalah Gemini, model AI besar, dilatih oleh Google. Apa yang bisa saya bantu hari ini?";
+        }
+        if (lowerText.includes("terima kasih")) {
+            return "Sama-sama! Selalu senang bisa membantu. Ada lagi yang ingin Anda diskusikan?";
+        }
+        if (lowerText.includes("desain web")) {
+            return "Anda baru saja bermain dengan AI Web Designer. Itu adalah simulasi yang menarik! Apakah Anda ingin saya generatekan 3 ide tema desain web minimalis?";
+        }
+        return "Gemini (Simulasi) : Saya memproses pertanyaan Anda. Untuk konteks yang lebih baik, bisakah Anda memperjelas tujuan dari pertanyaan tersebut? (Simulasi Respon Cerdas)";
+    };
+
+    const renderHistory = () => {
+        if (mode !== "chat") {
+            return response ? (
+                <div className="bg-green-50 p-4 rounded-xl text-left border border-green-300">
+                    <h4 className="font-bold text-green-700 flex items-center gap-2 mb-2"><Bot size={20} /> Gemini Response:</h4>
+                    <pre className="whitespace-pre-wrap font-sans text-slate-800">{response}</pre>
+                </div>
+            ) : null;
+        }
+
+        return (
+            <div className="space-y-4 max-h-96 overflow-y-auto p-2">
+                {chatHistory.map((item, index) => (
+                    <div key={index} className="space-y-3">
+                        {/* User Message */}
+                        <div className="flex justify-end">
+                            <div className="bg-blue-100 p-3 rounded-xl max-w-xs text-right shadow-sm">
+                                <p className="font-bold text-blue-800">Anda:</p>
+                                <p className="text-sm">{item.user}</p>
+                            </div>
+                        </div>
+                        {/* AI Response */}
+                        <div className="flex justify-start">
+                            <div className="bg-teal-50 p-3 rounded-xl max-w-sm text-left shadow-sm">
+                                <p className="font-bold text-teal-800 flex items-center gap-1"><Bot size={14} /> Gemini:</p>
+                                <p className="text-sm">{item.ai}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {isLoading && (
+                    <div className="flex justify-start">
+                        <div className="bg-slate-100 p-3 rounded-xl max-w-sm text-left shadow-sm">
+                            <p className="font-bold text-slate-500 flex items-center gap-1"><Bot size={14} /> Gemini:</p>
+                            <div className="animate-pulse text-slate-500">...typing</div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    return (
+        <div className="text-center w-full max-w-3xl animate-fadeIn">
+            <h2 className="text-3xl font-bold text-sky-600 mb-6 flex items-center justify-center gap-2">
+                <Bot className="text-sky-600" /> **Gemini AI Playground (Simulasi)** </h2>
+            <p className="text-slate-500 mb-6">Uji coba kemampuan Gemini dalam tiga mode berbeda. Ini adalah simulasi dari integrasi API.</p>
+
+            {/* Mode Selector */}
+            <div className="flex justify-center gap-4 mb-8">
+                <button
+                    onClick={() => { setMode("vision"); setResponse(""); setChatHistory([]); }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all ${mode === "vision" ? "bg-purple-600 text-white shadow-md" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+                >
+                    <Image size={18} /> Vision (Analisis Gambar)
+                </button>
+                <button
+                    onClick={() => { setMode("generate"); setResponse(""); setChatHistory([]); }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all ${mode === "generate" ? "bg-orange-600 text-white shadow-md" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+                >
+                    <Type size={18} /> Generate (Teks Panjang)
+                </button>
+                <button
+                    onClick={() => { setMode("chat"); setResponse(""); }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all ${mode === "chat" ? "bg-green-600 text-white shadow-md" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+                >
+                    <MessageSquare size={18} /> Chat Cerdas
+                </button>
+            </div>
+
+            {/* Input & Konten Area */}
+            <form onSubmit={handleGeminiCall} className="w-full">
+                <div className="mb-6 p-4 border-2 border-slate-200 rounded-xl bg-white shadow-lg">
+                    <h3 className="text-left text-xl font-bold mb-4 text-slate-700 flex items-center gap-2">
+                        {mode === "vision" ? <Image className="text-purple-500" /> : mode === "generate" ? <Type className="text-orange-500" /> : <MessageSquare className="text-green-500" />}
+                        Input {mode === "vision" ? "Konteks Gambar (Misal: Laptop/Kucing)" : mode === "generate" ? "Topik Artikel" : "Pesan Chat"}
+                    </h3>
+
+                    <textarea
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        rows={mode === "chat" ? 2 : 4}
+                        className="w-full p-3 border-2 border-sky-300 rounded-lg focus:border-sky-600 outline-none resize-none text-base"
+                        placeholder={mode === "vision" ? "Tulis konteks gambar yang Anda unggah (misal: 'Analisis gambar laptop gaming ini')." :
+                            mode === "generate" ? "Tulis topik, misal: 'Pentingnya AI dalam pengembangan web'..." :
+                                "Ketik pesan Anda..."}
+                        disabled={isLoading}
+                    />
+
+                    {mode === "vision" && (
+                        <div className="mt-3 flex items-center justify-between">
+                            <input type="file" accept="image/*" className="text-sm" title="Unggah gambar" disabled={isLoading} />
+                            <p className="text-xs text-slate-500">*(Simulasi: Gambar tidak benar-benar terunggah)*</p>
+                        </div>
+                    )}
+                </div>
+
+                <button
+                    type="submit"
+                    disabled={isLoading || input.trim() === ""}
+                    className={`w-full px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-lg ${isLoading ? 'bg-slate-400 text-white' : 'bg-sky-600 text-white hover:bg-sky-700'
+                        }`}
+                >
+                    {isLoading ?
+                        <> <div className="animate-spin h-5 w-5 border-2 border-t-2 border-t-white border-sky-300 rounded-full"></div> Sending to Gemini... </> :
+                        <> <Send size={18} /> Kirim ke Gemini </>
+                    }
+                </button>
+            </form>
+
+            {/* Output/History Area */}
+            {(response || chatHistory.length > 0) && (
+                <div className="mt-8 p-4 bg-slate-50 rounded-xl shadow-inner border-t-4 border-sky-500">
+                    <h3 className="text-left text-2xl font-bold mb-4 text-sky-700 flex items-center gap-2">
+                        <CornerUpLeft size={24} /> {mode === "chat" ? "Riwayat Percakapan" : "Hasil Gemini"}
+                    </h3>
+                    {renderHistory()}
+                </div>
+            )}
+        </div>
+    );
+}
+
 
 // ----------------------------------------------------------------------
 // 🖥️ KOMPONEN BARU: LIVE DESIGN PREVIEW (FINAL INTERAKTIF)
@@ -81,7 +294,6 @@ function LiveDesignPreview({ context, onBack }: any) {
     const highlightColor = isDarkMode ? 'bg-teal-400 text-slate-900' : `bg-teal-600 text-white`;
     const finalFontClass = `font-${font}`;
 
-    // Simulasikan struktur HTML/Tailwind yang sudah diperbaiki
     const renderContentItem = (i: number) => (
         <div key={i} className={`${itemBgColor} p-4 rounded-lg shadow-md ${finalTextColor}`}>
             <span className={`${finalFontClass} font-bold text-xl block mb-2`}>{custom_detail} {i + 1}</span>
@@ -150,7 +362,6 @@ function AiWebDesigner() {
 
     const [isLivePreview, setIsLivePreview] = useState(false);
 
-    // --- Logika Analisis Prompt ---
     const analyzePrompt = (text: string) => {
         const lowerText = text.toLowerCase();
 
@@ -191,12 +402,9 @@ function AiWebDesigner() {
 
         return context;
     };
-    // --------------------------------
 
     const context = analyzePrompt(prompt);
     const { theme, color, type, icon, header_text, base_bg, highlight, target_cols, font, component, custom_title, custom_detail } = context;
-
-    // --- LOGIC SIMULASI API GENERATOR ---
 
     const getRefineButtonText = () => {
         if (isLoading) return "Processing...";
@@ -319,14 +527,9 @@ function AiWebDesigner() {
     };
 
 
-    // ----------------------------------------------------------------------
-    // 🖥️ RENDER PANEL KODE & GENERATE HTML LENGKAP
-    // ----------------------------------------------------------------------
-
     const renderCodePanel = () => {
         if (designState === "initial") return null;
 
-        // Kode statis untuk panel Dev Console
         const codeSnippet = `
 // HTML Structure (Tailwind CSS) for ${custom_title}
 <div class="container mx-auto p-4 ${base_bg}">
@@ -345,7 +548,6 @@ function AiWebDesigner() {
 </div>
         `;
 
-        // FULL HTML YANG SIAP DIPASTE (Hanya muncul di V4)
         const getFinalHTML = () => `
 <!DOCTYPE html>
 <html lang="en">
@@ -439,7 +641,7 @@ function AiWebDesigner() {
                     </>
                 ) : (
                     <>
-                        <pre className="text-sm overflow-x-auto p-3 bg-gray-900 rounded-lg whitespace-pre-wrap wrap-break-words">
+                        <pre className="text-sm overflow-x-auto p-3 bg-gray-900 rounded-lg whitespace-pre-wrap wrap-break-word">
                             {codeSnippet.trim()}
                         </pre>
 
@@ -540,7 +742,6 @@ function AiWebDesigner() {
 
     // --- Render Kontrol Utama ---
 
-    // Jika isLivePreview true, langsung render komponen Live
     if (isLivePreview) {
         return <LiveDesignPreview context={context} onBack={() => setIsLivePreview(false)} />;
     }
@@ -613,8 +814,8 @@ function AiWebDesigner() {
                 {designState !== "design4" && (
                     <button
                         onClick={handleRefine}
-                        disabled={isLoading || (designState === "design3" && !isModCorrect) || designState === "initial"}
-                        className={`px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg ${(designState === "design1" || designState === "design2" || designState === "design3")
+                        disabled={designState === "initial" || designState === "design4" || isLoading || (designState === "design3" && !isModCorrect)}
+                        className={`px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg ${designState !== "initial" && designState !== "design4"
                             ? ((isApiError || (designState === "design3" && !isModCorrect)) ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-indigo-600 text-white hover:bg-indigo-700')
                             : "bg-slate-300 text-slate-500 cursor-not-allowed"
                             }`}
@@ -733,7 +934,7 @@ function TicTacToe() {
 }
 
 // ----------------------------------------------------------------------
-// 🎮 GAME 2: MATH RUSH (DIPERBAIKI DENGAN FITUR TAMBAHAN)
+// 🎮 GAME 2: MATH RUSH
 // ----------------------------------------------------------------------
 
 function MathRush() {
@@ -744,42 +945,21 @@ function MathRush() {
     const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(15);
     const [gameStatus, setGameStatus] = useState<'running' | 'over'>('over');
-    const [level, setLevel] = useState(1); // Tingkat kesulitan
-    const [streak, setStreak] = useState(0); // Jumlah jawaban benar berturut-turut
-    const [lives, setLives] = useState(3); // Kesempatan hidup
-    const [highScore, setHighScore] = useState(() => {
-        // Ambil high score dari localStorage
-        const saved = localStorage.getItem('mathRushHighScore');
-        return saved ? parseInt(saved, 10) : 0;
-    });
-    const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null); // Feedback visual
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // Operasi matematika yang tersedia (tambah / untuk tantangan)
-    const operators = ['+', '-', '*', '/'];
-
     const generateProblem = () => {
-        const op = operators[Math.floor(Math.random() * operators.length)];
-        let n1, n2;
+        const op = ['+', '-', '*'][Math.floor(Math.random() * 3)];
+        let n1 = Math.floor(Math.random() * (op === '*' ? 10 : 20)) + 1;
+        let n2 = Math.floor(Math.random() * (op === '*' ? 10 : 20)) + 1;
 
-        // Sesuaikan range angka berdasarkan level
-        const maxNum = level * 10;
-        n1 = Math.floor(Math.random() * maxNum) + 1;
-        n2 = Math.floor(Math.random() * maxNum) + 1;
-
-        if (op === '-') {
-            // Pastikan n1 >= n2 untuk hasil positif
-            if (n2 > n1) [n1, n2] = [n2, n1];
-        } else if (op === '/') {
-            // Pastikan pembagian menghasilkan integer
-            n1 = n2 * (Math.floor(Math.random() * maxNum) + 1);
+        if (op === '-' && n2 > n1) {
+            [n1, n2] = [n2, n1];
         }
 
         setNum1(n1);
         setNum2(n2);
         setOperator(op);
         setAnswer('');
-        setFeedback(null);
         if (inputRef.current) inputRef.current.focus();
     };
 
@@ -792,40 +972,22 @@ function MathRush() {
             case '+': correctAnswer = num1 + num2; break;
             case '-': correctAnswer = num1 - num2; break;
             case '*': correctAnswer = num1 * num2; break;
-            case '/': correctAnswer = num1 / num2; break;
             default: return;
         }
 
         if (parseInt(answer) === correctAnswer) {
-            setScore(s => s + (level * 10) + (streak * 5)); // Bonus skor berdasarkan level dan streak
-            setStreak(s => s + 1);
-            setFeedback('correct');
-            // Tingkatkan level setiap 5 jawaban benar
-            if ((score + 1) % 50 === 0) setLevel(l => l + 1);
+            setScore(s => s + 1);
+            generateProblem();
         } else {
-            setLives(l => l - 1);
-            setStreak(0);
-            setFeedback('wrong');
-            setTimeLeft(t => Math.max(0, t - 2)); // Penalti waktu
+            setTimeLeft(t => Math.max(0, t - 2));
+            generateProblem();
         }
-
-        // Jika lives habis, game over
-        if (lives <= 1 && parseInt(answer) !== correctAnswer) {
-            setGameStatus('over');
-            return;
-        }
-
-        generateProblem();
     };
 
     const startGame = () => {
         setScore(0);
         setTimeLeft(15);
-        setLevel(1);
-        setStreak(0);
-        setLives(3);
         setGameStatus('running');
-        setFeedback(null);
         generateProblem();
     };
 
@@ -833,24 +995,11 @@ function MathRush() {
         let timer: NodeJS.Timeout;
         if (gameStatus === 'running' && timeLeft > 0) {
             timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-        } else if (timeLeft === 0 || lives === 0) {
+        } else if (timeLeft === 0) {
             setGameStatus('over');
-            // Simpan high score
-            if (score > highScore) {
-                setHighScore(score);
-                localStorage.setItem('mathRushHighScore', score.toString());
-            }
         }
         return () => clearTimeout(timer);
-    }, [gameStatus, timeLeft, lives, score, highScore]);
-
-    // Reset feedback setelah 1 detik
-    useEffect(() => {
-        if (feedback) {
-            const timer = setTimeout(() => setFeedback(null), 1000);
-            return () => clearTimeout(timer);
-        }
-    }, [feedback]);
+    }, [gameStatus, timeLeft]);
 
     return (
         <div className="text-center w-full max-w-sm animate-fadeIn">
@@ -861,9 +1010,7 @@ function MathRush() {
             {gameStatus === 'over' ? (
                 <div className="py-10">
                     <p className="text-2xl font-bold mb-4 text-slate-700">Game Over!</p>
-                    <p className="text-3xl font-extrabold text-orange-600 mb-4">Final Score: {score}</p>
-                    <p className="text-xl text-slate-600 mb-4">High Score: {highScore}</p>
-                    <p className="text-lg text-slate-500 mb-8">Level Reached: {level}</p>
+                    <p className="text-3xl font-extrabold text-orange-600 mb-8">Final Score: {score}</p>
                     <button onClick={startGame} className="px-8 py-3 bg-orange-500 text-white rounded-xl font-bold hover:bg-orange-600 transition-all">
                         <Play size={18} className="inline mr-2" /> Start New Game
                     </button>
@@ -871,24 +1018,10 @@ function MathRush() {
             ) : (
                 <>
                     <div className="flex justify-between items-center mb-6">
-                        <div className="text-lg font-semibold p-2 bg-slate-100 rounded-lg">Score: <span className="text-orange-600 font-bold">{score}</span></div>
-                        <div className="text-lg font-semibold p-2 bg-slate-100 rounded-lg">Level: <span className="text-blue-600 font-bold">{level}</span></div>
+                        <div className="text-xl font-semibold p-2 bg-slate-100 rounded-lg">Score: <span className="text-orange-600 font-bold">{score}</span></div>
                         <div className={`text-2xl font-bold p-2 rounded-lg ${timeLeft <= 5 ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-green-100 text-green-600'}`}>
                             Time: {timeLeft}s
                         </div>
-                    </div>
-
-                    <div className="flex justify-center gap-4 mb-4">
-                        <div className="text-lg font-semibold p-2 bg-yellow-100 rounded-lg">Streak: <span className="text-yellow-600 font-bold">{streak}</span></div>
-                        <div className="text-lg font-semibold p-2 bg-red-100 rounded-lg">Lives: <span className="text-red-600 font-bold">{lives}</span></div>
-                    </div>
-
-                    {/* Progress Bar untuk Waktu */}
-                    <div className="w-full bg-gray-200 rounded-full h-4 mb-6">
-                        <div
-                            className={`h-4 rounded-full transition-all duration-1000 ${timeLeft <= 5 ? 'bg-red-500' : 'bg-green-500'}`}
-                            style={{ width: `${(timeLeft / 15) * 100}%` }}
-                        ></div>
                     </div>
 
                     <div className="text-5xl font-extrabold text-slate-800 mb-8">
@@ -905,11 +1038,7 @@ function MathRush() {
                             type="number"
                             value={answer}
                             onChange={(e) => setAnswer(e.target.value)}
-                            className={`w-full max-w-xs p-4 text-center text-3xl font-bold border-4 rounded-xl outline-none transition-all ${
-                                feedback === 'correct' ? 'border-green-500 bg-green-50' :
-                                feedback === 'wrong' ? 'border-red-500 bg-red-50' :
-                                'border-orange-300 focus:border-orange-600'
-                            }`}
+                            className="w-full max-w-xs p-4 text-center text-3xl font-bold border-4 border-orange-300 rounded-xl focus:border-orange-600 outline-none"
                             placeholder="Jawaban..."
                             required
                         />
@@ -917,19 +1046,11 @@ function MathRush() {
                             Submit
                         </button>
                     </form>
-
-                    {/* Feedback Visual */}
-                    {feedback && (
-                        <div className={`mt-4 p-3 rounded-lg font-bold text-white ${feedback === 'correct' ? 'bg-green-500' : 'bg-red-500'}`}>
-                            {feedback === 'correct' ? 'Benar! +Bonus' : 'Salah! -Lives'}
-                        </div>
-                    )}
                 </>
             )}
         </div>
     );
 }
-
 
 // ----------------------------------------------------------------------
 // 🎮 GAME 3: MEMORY GAME
@@ -1265,6 +1386,3 @@ function ReactionTest() {
         </div>
     );
 }
-
-// Catatan: Komponen LiveDesignPreview dan AiWebDesigner sudah ada di bagian atas.
-// Pastikan tidak ada duplikasi fungsi di file lengkap Anda.
