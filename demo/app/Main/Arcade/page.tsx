@@ -814,8 +814,8 @@ function AiWebDesigner() {
                 {designState !== "design4" && (
                     <button
                         onClick={handleRefine}
-                        disabled={designState === "initial" || designState === "design4" || isLoading || (designState === "design3" && !isModCorrect)}
-                        className={`px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg ${designState !== "initial" && designState !== "design4"
+                        disabled={designState === "initial" || isLoading || (designState === "design3" && !isModCorrect)}
+                        className={`px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg ${(designState === "design1" || designState === "design2" || designState === "design3")
                             ? ((isApiError || (designState === "design3" && !isModCorrect)) ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-indigo-600 text-white hover:bg-indigo-700')
                             : "bg-slate-300 text-slate-500 cursor-not-allowed"
                             }`}
